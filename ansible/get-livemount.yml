@@ -1,0 +1,18 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - /Users/jake/rubrik/ansible/jake.vault
+  vars:
+    vm_name: sadn1-jake-l1
+
+  tasks:
+    - name: Get livemount names
+      rubrikinc.cdm.rubrik_get_vsphere_live_mount_names:
+        vm_name: "{{ vm_name }}"
+        timeout: 15
+        provider: "{{ rubrik_provider }}"
+      register: livemounts
+    - debug: var=livemounts.response[0]

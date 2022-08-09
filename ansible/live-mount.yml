@@ -1,0 +1,21 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - /Users/jake/rubrik/ansible/jake.vault
+  vars:
+    vm_name: sand1-jake-l1
+
+  tasks:
+    - name: Live Mount VM
+      rubrikinc.cdm.rubrik_vsphere_live_mount:
+        vm_name: "{{ vm_name }}"
+        remove_network_devices: false
+        power_on: true
+        host: "current"
+        date: "02-16-2022"
+        time: "6:12 PM"
+        timeout: 15
+        provider: "{{ rubrik_provider }}"

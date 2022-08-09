@@ -1,0 +1,14 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - /Users/jake/rubrik/ansible/jake.vault
+  vars:
+    vm_name: sand1-jake-l1
+
+  tasks:
+    - name: On-Demand Snapshot
+      rubrikinc.cdm.rubrik_cluster_version:
+        provider: "{{ rubrik_provider }}"

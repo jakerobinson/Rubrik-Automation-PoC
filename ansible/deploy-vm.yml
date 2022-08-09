@@ -1,0 +1,42 @@
+---
+
+- name: Create VMware VM and assign Rubrik SLA
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - /Users/jake/rubrik/ansible/jake.vault
+
+  vars:
+    vcenter_server: sand1-vcsa.rubrikdemo.com
+    datacenter_name: Sandbox-1 Datacenter
+    cluster_name: Sandbox-1 SJC Cluster
+    object_name: sand1-jake-l1
+    folder: /Sandbox-1 Datacenter/vm/Specialists/Jake Robinson
+    template: centos7-min-x86_64-patched-noroot-100518-puppet
+
+  tasks:
+  - name: Deploy VM from template
+    vmware_guest:
+      hostname: "{{ vcenter_server }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+      name: "{{ object_name }}"
+      template: "{{ template }}"
+      datacenter: "{{ datacenter_name }}"
+      folder: "{{ folder }}"
+      state: poweredon
+      cluster: "{{ cluster_name }}"
+
+  - name: Refresh vCenter Metadata
+    rubrikinc.cdm.rubrik_refresh_vcenter:
+        vcenter_ip: "{{ vcenter_server }}"
+        wait_for_completion: true
+        provider: "{{ rubrik_provider }}"
+
+  - name: Assign Jake's VMs to Gold SLA
+    rubrikinc.cdm.rubrik_assign_sla:
+        object_name: "{{ object_name }}"
+        sla_name: "gold"
+        provider: "{{ rubrik_provider }}"

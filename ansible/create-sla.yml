@@ -1,0 +1,15 @@
+---
+
+- name: Assign SLA Demo
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - /Users/jake/rubrik/ansible/jake.vault  
+
+  tasks: 
+  - name: Assign Jake's VMs to Gold SLA
+    rubrikinc.cdm.rubrik_create_sla:
+      name: Jake-SLA
+      daily_frequency: 1
+      daily_retention: 30

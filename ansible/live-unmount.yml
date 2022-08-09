@@ -1,0 +1,21 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - /Users/jake/rubrik/ansible/jake.vault
+  vars:
+    vm_name: sand1-jake-l1
+
+  tasks:
+    - name: Get livemount names
+      rubrikinc.cdm.rubrik_get_vsphere_live_mount_names:
+        vm_name: "{{ vm_name }}"
+        timeout: 15
+        provider: "{{ rubrik_provider }}"
+      register: livemounts
+    - name: Unmount VM
+      rubrikinc.cdm.rubrik_vsphere_live_unmount:
+        mounted_vm_name: "{{ livemounts.response[0] }}"
+        provider: "{{ rubrik_provider }}"

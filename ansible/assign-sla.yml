@@ -1,0 +1,19 @@
+---
+
+- name: Assign SLA Demo
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - /Users/jake/rubrik/ansible/jake.vault
+  vars:
+    jake_vms:
+      - am1-jakerobi-l1
+      - am1-jakerobi-w1
+
+  tasks:
+  - name: Assign Jake's VMs to Gold SLA
+    rubrikinc.cdm.rubrik_assign_sla:
+      object_name: "{{ item }}"
+      sla_name: "gold"
+    loop: "{{ jake_vms }}"
