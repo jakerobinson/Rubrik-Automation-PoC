@@ -1,0 +1,8 @@
+---
+
+vcenter_user: administrator@vsphere.local
+vcenter_password: "my_Password?"
+
+rubrik_provider:
+  node_ip: myvcenter.rubrikdemo.com
+  api_token: eyJzdWIiOiI1YTc1YWU5Yy0zMzdkLTQ3ZDMtYjUxNS01MmFmNzE5MTcxMmNfZjEwZjcwN2MtNzYy
